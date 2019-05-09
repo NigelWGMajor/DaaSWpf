@@ -84,34 +84,28 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\nickm\\.nuget\\packages\\": {},
-    "C:\\ProgramData\\Xamarin\\NuGet\\": {}
+    "C:\\Users\\Nigel\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\_g\\DaaS\\DaaSWpf\\DaaSWpf\\DaaSWpf.csproj",
+      "projectUniqueName": "N:\\_g\\DaaS\\DaasWpf\\DaaSWpf\\DaaSWpf.csproj",
       "projectName": "DaaSWpf",
-      "projectPath": "C:\\_g\\DaaS\\DaaSWpf\\DaaSWpf\\DaaSWpf.csproj",
-      "packagesPath": "C:\\Users\\nickm\\.nuget\\packages\\",
-      "outputPath": "C:\\_g\\DaaS\\DaaSWpf\\DaaSWpf\\obj\\",
+      "projectPath": "N:\\_g\\DaaS\\DaasWpf\\DaaSWpf\\DaaSWpf.csproj",
+      "packagesPath": "C:\\Users\\Nigel\\.nuget\\packages\\",
+      "outputPath": "N:\\_g\\DaaS\\DaasWpf\\DaaSWpf\\obj\\",
       "projectStyle": "PackageReference",
       "skipContentFileWrite": true,
-      "fallbackFolders": [
-        "C:\\ProgramData\\Xamarin\\NuGet\\"
-      ],
       "configFilePaths": [
-        "C:\\Users\\nickm\\AppData\\Roaming\\NuGet\\NuGet.Config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
+        "C:\\Users\\Nigel\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
         "net45"
       ],
       "sources": {
         "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-        "https://api.nuget.org/v3/index.json": {},
-        "https://craigs-dev.pkgs.visualstudio.com/_packaging/TalisysCloud/nuget/v3/index.json": {}
+        "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
         "net45": {

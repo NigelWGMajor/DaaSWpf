@@ -65,6 +65,7 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="CommandClass.cs" />
     <Compile Include="DaaSModel.cs" />
     <Compile Include="DaasVM.cs" />
     <Compile Include="Joke.cs" />

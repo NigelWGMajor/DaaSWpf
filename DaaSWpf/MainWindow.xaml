@@ -7,6 +7,10 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <DockPanel LastChildFill="true">
-        <Border DockPanel.Dock="Top"></Border>        
+        <Border DockPanel.Dock="Top">
+            <StackPanel Orientation="Horizontal">
+                <Button Command="{Binding TestCommand}">Test</Button><!-- //! Remove after dev -->
+            </StackPanel>
+        </Border>        
     </DockPanel>
 </Window>

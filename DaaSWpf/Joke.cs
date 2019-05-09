@@ -9,10 +9,10 @@ namespace DaaSWpf
 {
     public class Joke
     {
-        public string Id { get; private set; }
-        public string Content { get; private set; }
-        public string Status { get; private set; }
-        public Joke(string jsonText)
+        public string Id { get; set; }
+        public string Content { get; set; }
+        public string Status { get; set; }
+        public Joke()
         {
            
 
