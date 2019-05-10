@@ -15,7 +15,6 @@ C:\_g\DaaS\DaaSWpf\DaaSWpf\obj\Debug\DaaSWpf.exe
 C:\_g\DaaS\DaaSWpf\DaaSWpf\obj\Debug\DaaSWpf.pdb
 C:\_g\DaaS\DaaSWpf\DaaSWpf\bin\Debug\Newtonsoft.Json.dll
 C:\_g\DaaS\DaaSWpf\DaaSWpf\obj\Debug\DaaSWpf.csproj.CopyComplete
-N:\_g\DaaS\DaasWpf\DaaSWpf\obj\Debug\DaaSWpf.csprojAssemblyReference.cache
 N:\_g\DaaS\DaasWpf\DaaSWpf\obj\Debug\MainWindow.g.cs
 N:\_g\DaaS\DaasWpf\DaaSWpf\obj\Debug\App.g.cs
 N:\_g\DaaS\DaasWpf\DaaSWpf\obj\Debug\DaaSWpf_MarkupCompile.cache
@@ -32,3 +31,4 @@ N:\_g\DaaS\DaasWpf\DaaSWpf\obj\Debug\DaaSWpf.csproj.CoreCompileInputs.cache
 N:\_g\DaaS\DaasWpf\DaaSWpf\obj\Debug\DaaSWpf.csproj.CopyComplete
 N:\_g\DaaS\DaasWpf\DaaSWpf\obj\Debug\DaaSWpf.exe
 N:\_g\DaaS\DaasWpf\DaaSWpf\obj\Debug\DaaSWpf.pdb
+N:\_g\DaaS\DaasWpf\DaaSWpf\obj\Debug\DaaSWpf.csprojAssemblyReference.cache

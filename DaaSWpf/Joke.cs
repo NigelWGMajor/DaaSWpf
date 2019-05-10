@@ -9,9 +9,9 @@ namespace DaaSWpf
 {
     public class Joke
     {
-        public string Id { get; set; }
-        public string Content { get; set; }
-        public string Status { get; set; }
+        public string id { get; set; }
+        public string joke { get; set; }
+        public string status { get; set; }
         public Joke()
         {
            

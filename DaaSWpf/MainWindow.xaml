@@ -11,6 +11,7 @@
             <StackPanel Orientation="Horizontal">
                 <Button Command="{Binding TestCommand}">Test</Button><!-- //! Remove after dev -->
             </StackPanel>
-        </Border>        
+        </Border>   
+        <Border></Border>
     </DockPanel>
 </Window>

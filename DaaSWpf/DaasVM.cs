@@ -43,7 +43,7 @@ namespace DaaSWpf
 
         private void DoTest(object o)
         {
-            _model.Push<List<Joke>>(new DaaSModel.RequestFind(new List<Joke>(), c => Jokes = c, e => Error = e));
+            _model.Push<List<Joke>>(new DaaSModel.RequestFind("dog", c => Jokes = c, e => Error = e));
         }
         
         #region properties & Fields

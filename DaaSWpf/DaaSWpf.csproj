@@ -69,6 +69,7 @@
     <Compile Include="DaaSModel.cs" />
     <Compile Include="DaasVM.cs" />
     <Compile Include="Joke.cs" />
+    <Compile Include="JokeColllection.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
