@@ -1,4 +1,5 @@
 ﻿using System;
+using System.CodeDom;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
@@ -47,27 +48,30 @@ namespace DaaSWpf
         #endregion // constructor
 
         #region Methods
-
-        public Joke GetRandomref()
+        /// <summary>
+        /// This is waht we normally call.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="url"></param>
+        /// <returns></returns>
+        public T Fetch<T>(string url)
         {
-            return GetRandomAsync().Result;
+            string json = FetchUrl(url).Result;
+            // we now have the raw JSON string.
+            T result = Newtonsoft.Json.JsonConvert.DeserializeObject<T>(json);
+            return result;
         }
 
-        public async Task<Joke> GetRandomAsync() //! will return a joke ultimately
+        private async Task<string> FetchUrl(string url) //! will return a joke ultimately
         {
             try
             {
-                using (HttpResponseMessage response = await _client.GetAsync(_getRandomUrl_))
+                using (HttpResponseMessage response = await _client.GetAsync(url))
                 {
                     using (HttpContent content = response.Content)
                     {
                         //using (StreamReader reader 
-                        string s = await content.ReadAsStringAsync();
-
-                        var z = Newtonsoft.Json.Linq.JObject.Parse(s);
-
-
-                        return new Joke { Id = (string)z["id"], Content = (string)z["Ccntent"], Status = (string)z["status"] };
+                        return await content.ReadAsStringAsync();
                     }
                 }
             }
@@ -152,23 +156,35 @@ namespace DaaSWpf
 
         internal class RequestRandom : Request<Joke>
         {
-            public RequestRandom(Joke data, Action<Joke> onResult, Action<Exception> onFail)
-                            : base(data, onResult, onFail)
-            { Kind = RequestType.RequestRandom; }
+            protected override Object Data { get; set; }
+            public RequestRandom(object data, Action<Joke> onResult, Action<Exception> onFail)
+                : base(onResult, onFail)
+            {
+                Kind = RequestType.RequestRandom;
+                Data = null;
+            }
         }
 
         internal class RequestFind : Request<List<Joke>>
         {
-            public RequestFind(List<Joke> data, Action<List<Joke>> onResult, Action<Exception> onFail)
-                : base(data, onResult, onFail)
-            { Kind = RequestType.RequestFind; }
+            protected override Object Data { get; set; }
+            public RequestFind(string term, Action<List<Joke>> onResult, Action<Exception> onFail)
+                : base(onResult, onFail)
+            {
+                Kind = RequestType.RequestFind;
+                Data = term;
+            }
         }
 
         internal class RequestById : Request<int>
         {
-            public RequestById(int data, Action<int> onResult, Action<Exception> onFail)
-                : base(data, onResult, onFail)
-            { Kind = RequestType.RequestFind; }
+            protected override Object Data { get; set; }
+            public RequestById(string id, Action<int> onResult, Action<Exception> onFail)
+                : base(onResult, onFail)
+            {
+                Kind = RequestType.RequestFind;
+                object Data = id;
+            }
         }
 
         #region Nix Async Model behind-the-scenes stuff (should be stable)
@@ -195,17 +211,16 @@ namespace DaaSWpf
             /// <param name="onResult">A Lambda to handle the success case (receives a parameter of type T)</param>
             /// <param name="onFail">A lambda to handle the failure case (receives an Exception type)</param>
             /// <param name="data">Incoming parameter of type T</param>
-            protected Request(T data, Action<T> onResult, Action<Exception> onFail)
+            protected Request(Action<T> onResult, Action<Exception> onFail)
             {
-                Data = data;
                 OnResult = onResult;
                 OnFail = onFail;
             }
-            private T Data { get; set; }
+            protected virtual object Data { get; set; }
             public object[] Parameters => new Object[] { Data, OnResult, OnFail};
-            public Action<T> OnResult { get; set; }
-            public Action<Exception> OnFail { get; set; }
-            public virtual RequestType Kind { get; set; }
+            public Action<T> OnResult { private get; set; }
+            public Action<Exception> OnFail { private get; set; }
+            public virtual RequestType Kind { get; protected set; }
         }
 
         #endregion // nix async model framework
@@ -237,27 +252,40 @@ namespace DaaSWpf
                 pass.Invoke((Joke)parameters[0]);                      // <(-- customize the type to suit
         }
 
-        private void DoFind(object s, DoWorkEventArgs e)
+        private async void DoFind(object s, DoWorkEventArgs e)
         {
             var parameters = (object[])e.Argument; // standard stuff 
             e.Result = parameters;                 // to pass data
 
-            List<Joke> j = (List<Joke>)parameters[0];
+            string term = (string)parameters[0];
+            try
+            {
+                //! start
+                string url = string.Format(_getSearchUrl_, term, 30, 1);
+                var x = Fetch<JokeCollection>(url);
 
-            //! do stuff here
-
-            parameters[0] = j;
+                parameters[0] = x.results.ToList();
+                //! end
+            }
+            catch (Exception ex)
+            {
+                parameters[0] = ex;
+            }
         }
+
         private void DoneFind(object s, RunWorkerCompletedEventArgs e)
         {
-            var parameters = (object[])e.Result;
+            var parameters = (object[]) e.Result;
 
-            Action<List<Joke>> pass = (Action<List<Joke>>)parameters[1];           // <(-- customize the type to suit.
-            Action<Exception> fail = (Action<Exception>)parameters[2]; // always pass Exception
-            if (e.Error != null)
-                fail.Invoke(e.Error);
+            Action<List<Joke>> pass = (Action<List<Joke>>) parameters[1]; // <(-- customize the type to suit.
+            Action<Exception> fail = (Action<Exception>) parameters[2]; // always pass Exception
+            if (parameters[0] is Exception)
+                fail.Invoke((Exception) parameters[0]);
             else
-                pass.Invoke((List<Joke>)parameters[0]);                      // <(-- customize the type to suit
+            {
+                var x = parameters[0];
+                pass.Invoke((List<Joke>)x) ; // <(-- customize the type to suit
+            }
         }
 
         private void DoById(object s, DoWorkEventArgs e)
