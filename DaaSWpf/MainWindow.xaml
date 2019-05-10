@@ -5,13 +5,63 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:DaaSWpf"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
-    <DockPanel LastChildFill="true">
-        <Border DockPanel.Dock="Top">
-            <StackPanel Orientation="Horizontal">
-                <Button Command="{Binding TestCommand}">Test</Button><!-- //! Remove after dev -->
+        Title="Dad as a Service" 
+        Height="600" Width="800">
+    <Window.Resources>
+        <local:FalseToCollapsedConverter x:Key="FalseToCollapsedConverter" />
+    </Window.Resources>
+
+    <DockPanel LastChildFill="true" Margin="2">
+        <Border DockPanel.Dock="Top" BorderBrush="Maroon" 
+                BorderThickness="1" Margin="2">
+            <WrapPanel Orientation="Horizontal" Margin="2">
+                <RadioButton Padding="4" Margin="7,0"  VerticalContentAlignment="Center" >Auto-update</RadioButton>
+                <RadioButton Padding="4" Margin="7,0" VerticalContentAlignment="Center">Use search term:</RadioButton>
+                <TextBox Padding="4" Margin="2" Width="100" Text="{Binding SearchTerm}"/>
+                <Button Command="{Binding TestCommand}" 
+                        Width="80"
+                        Margin="2">Search</Button>
+                <!-- //! Remove after dev -->
+            </WrapPanel>
+        </Border>
+        <Border DockPanel.Dock="Bottom">
+            <StackPanel Orientation="Horizontal" 
+                        Margin="4"
+                        Background="Maroon" 
+                        Visibility="{Binding ShowError, Converter={StaticResource FalseToCollapsedConverter}}">
+                <TextBlock Foreground="Yellow" Margin="4">Error:</TextBlock>
+                <TextBlock Text="{Binding ErrorText}" 
+                           Foreground="Yellow"
+                           Margin="4" />
             </StackPanel>
-        </Border>   
-        <Border></Border>
+        </Border>
+        <Border Margin="2" x:Name="MainField">
+            <!-- LastChildFill applies to this border! -->
+            <ListView ItemsSource ="{Binding Jokes}" 
+                      HorizontalAlignment="Stretch" Background="DarkGray"
+                      ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+                <ListView.ItemContainerStyle>
+                <Style TargetType="ListViewItem">
+                    <Setter Property="HorizontalContentAlignment" Value="Stretch"></Setter>
+
+                </Style>
+                </ListView.ItemContainerStyle>
+
+
+<ListView.ItemTemplate>
+                    <DataTemplate>
+                        <Border BorderBrush="Navy" 
+                                HorizontalAlignment="Stretch"
+                                BorderThickness="1" 
+                                Padding="4" 
+                                Margin="2" 
+                                CornerRadius="5"
+                                Background="Lavender">
+                          <TextBlock TextWrapping="Wrap" HorizontalAlignment="Stretch" Text="{Binding joke}" Padding="4"/>
+                        </Border>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </Border>
     </DockPanel>
 </Window>

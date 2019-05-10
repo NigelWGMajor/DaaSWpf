@@ -261,9 +261,11 @@ namespace DaaSWpf
             try
             {
                 //! start
+
+               // throw new Exception("Just Testing exception handling");
+
                 string url = string.Format(_getSearchUrl_, term, 30, 1);
                 var x = Fetch<JokeCollection>(url);
-
                 parameters[0] = x.results.ToList();
                 //! end
             }

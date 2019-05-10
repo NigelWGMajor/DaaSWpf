@@ -10,7 +10,7 @@ using System.Windows.Input;
 
 namespace DaaSWpf
 {
-    class DaasVM
+    class DaasVM : INotifyPropertyChanged
     {
         #region Constants
 
@@ -56,7 +56,7 @@ namespace DaaSWpf
         /// </summary>
         public List<Joke>  Jokes
         {
-            get => _jokes ?? (_jokes = new List<Joke>());
+            get => _jokes;
             set
             {
                 if (value == _jokes) return;
@@ -72,12 +72,12 @@ namespace DaaSWpf
             set
             {
                 _error = value;
-                RaisePropertyChanged("Error", "Errortext", "ShowError");
+                RaisePropertyChanged("Error", "ErrorText", "ShowError");
             }
         }
         public string ErrorText
         {
-            get { return _error.Message; }
+            get { return _error?.Message; }
         }
         public bool ShowError
         {
