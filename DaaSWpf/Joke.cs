@@ -14,14 +14,6 @@ namespace DaaSWpf
         public string status { get; set; }
         public Joke()
         {
-           
-
-
-
-
-
-
         }
-
     }
 }

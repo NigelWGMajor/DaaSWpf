@@ -32,3 +32,4 @@ N:\_g\DaaS\DaasWpf\DaaSWpf\obj\Debug\DaaSWpf.csproj.CopyComplete
 N:\_g\DaaS\DaasWpf\DaaSWpf\obj\Debug\DaaSWpf.exe
 N:\_g\DaaS\DaasWpf\DaaSWpf\obj\Debug\DaaSWpf.pdb
 N:\_g\DaaS\DaasWpf\DaaSWpf\obj\Debug\DaaSWpf.csprojAssemblyReference.cache
+N:\_g\DaaS\DaasWpf\DaaSWpf\obj\Debug\GeneratedInternalTypeHelper.g.cs

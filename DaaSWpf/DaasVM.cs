@@ -10,7 +10,7 @@ using System.Windows.Input;
 
 namespace DaaSWpf
 {
-    class DaasVM
+    class DaasVM : INotifyPropertyChanged
     {
         #region Constants
 
@@ -19,15 +19,21 @@ namespace DaaSWpf
         #region Commanding
 
         private ICommand _testCommand; //!  only used for testing during development
+        private ICommand _closeCommand;
         public ICommand TestCommand
         {
             get { return _testCommand; }
         }
-
+        public ICommand CloseCommand
+        {
+            get { return _closeCommand; }
+        }
         private void InitializeCommands()
         {
             _testCommand = new CommandClass(c => true, c => DoTest(c)); //!  temporary for dev testing during development
+            _closeCommand = new CommandClass(c => true, c => App.Current.MainWindow.Close());
         }
+
 
         #endregion // commanding
 
@@ -41,9 +47,9 @@ namespace DaaSWpf
 
         #endregion // constructor
 
-        private void DoTest(object o)
+        private void DoSearch(object o)
         {
-            _model.Push<List<Joke>>(new DaaSModel.RequestFind("dog", c => Jokes = c, e => Error = e));
+            _model.Push<List<Joke>>(new DaaSModel.RequestFind(SearchTerm, c => Jokes = c, e => Error = e));
         }
         
         #region properties & Fields
@@ -56,7 +62,7 @@ namespace DaaSWpf
         /// </summary>
         public List<Joke>  Jokes
         {
-            get => _jokes ?? (_jokes = new List<Joke>());
+            get => _jokes;
             set
             {
                 if (value == _jokes) return;
@@ -72,17 +78,30 @@ namespace DaaSWpf
             set
             {
                 _error = value;
-                RaisePropertyChanged("Error", "Errortext", "ShowError");
+                RaisePropertyChanged("Error", "ErrorText", "ShowError");
             }
         }
         public string ErrorText
         {
-            get { return _error.Message; }
+            get { return _error?.Message; }
         }
         public bool ShowError
         {
             get { return _error != null; }
-        } 
+        }
+
+
+        private string _searchTerm;
+        public string SearchTerm
+        {
+            get { return _searchTerm; }
+            set
+            {
+                if (value == _searchTerm) return;
+                _searchTerm = value;
+                RaisePropertyChanged("SearchTerm");
+            }
+        }
         #endregion // properties & fields
 
         #region Methods
