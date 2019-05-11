@@ -6,12 +6,23 @@
         xmlns:local="clr-namespace:DaaSWpf"
         mc:Ignorable="d"
         Title="Dad as a Service" 
-        Height="600" Width="800">
+        Height="600" Width="800"
+        WindowStyle="None"
+        ResizeMode="CanResize"
+        Background="#ff111111"
+        >
     <Window.Resources>
         <local:FalseToCollapsedConverter x:Key="FalseToCollapsedConverter" />
     </Window.Resources>
 
     <DockPanel LastChildFill="true" Margin="2">
+
+            <DockPanel DockPanel.Dock="Top" Margin="4">
+            <Button DockPanel.Dock="Right" Width="23" Height="23" Command="{Binding CloseCommand}">X</Button>
+            <TextBlock Foreground="DarkSlateGray"  DockPanel.Dock="Left" FontSize="20" FontFamily="Arial">Daas</TextBlock>
+            <TextBlock  Foreground="DarkSlateGray" DockPanel.Dock="Left" FontSize="12" FontStyle="Italic"  FontFamily="Arial">Dad as a Service</TextBlock>
+            </DockPanel>
+
         <Border DockPanel.Dock="Top" BorderBrush="Maroon" 
                 BorderThickness="1" Margin="2">
             <WrapPanel Orientation="Horizontal" Margin="2">
