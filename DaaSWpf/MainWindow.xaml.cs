@@ -8,6 +8,7 @@ using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
@@ -20,10 +21,28 @@ namespace DaaSWpf
     public partial class MainWindow : Window
     {
         private DaasVM _vm;
+        private static FrameworkElement _self;
         public MainWindow()
         {
             InitializeComponent();
             DataContext = _vm = new DaasVM();
+            _self = this;
+        }
+        internal static void FadeIn()
+        {
+            var x = ((Storyboard)(_self.TryFindResource("FadeIn")));
+                x.Begin();
+        }
+
+        internal static void FadeOut()
+        {
+            var x = ((Storyboard)(_self.TryFindResource("FadeOut")));
+                x.Begin();
+        }
+        
+        private void Credits_Launch(object sender, MouseButtonEventArgs e)
+        {
+            System.Diagnostics.Process.Start(@"https://icanhazdadjoke.com/");
         }
     }
 }

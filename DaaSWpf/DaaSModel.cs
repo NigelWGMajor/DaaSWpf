@@ -157,7 +157,7 @@ namespace DaaSWpf
         internal class RequestRandom : Request<Joke>
         {
             protected override Object Data { get; set; }
-            public RequestRandom(object data, Action<Joke> onResult, Action<Exception> onFail)
+            public RequestRandom(Action<Joke> onResult, Action<Exception> onFail)
                 : base(onResult, onFail)
             {
                 Kind = RequestType.RequestRandom;
@@ -234,11 +234,9 @@ namespace DaaSWpf
             var parameters = (object[])e.Argument; // standard stuff 
             e.Result = parameters;                 // to pass data
 
-            Joke j = (Joke)parameters[0];
-
             //! do stuff here
-
-            parameters[0] = j; // standard update
+            var x = Fetch<Joke>(_getRandomUrl_);
+            parameters[0] = x; // standard update
         }
         private void DoneRandom(object s, RunWorkerCompletedEventArgs e)
         {
