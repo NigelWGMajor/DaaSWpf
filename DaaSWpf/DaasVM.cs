@@ -6,7 +6,9 @@ using System.Linq;
 using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Threading; // for the dispatch timer
 using System.Windows.Input;
+using System.Windows.Media.Animation;
 
 namespace DaaSWpf
 {
@@ -18,11 +20,10 @@ namespace DaaSWpf
 
         #region Commanding
 
-        private ICommand _testCommand; //!  only used for testing during development
-        private ICommand _closeCommand;
-        public ICommand TestCommand
+        private ICommand _searchCommand, _closeCommand;
+        public ICommand SearchCommand
         {
-            get { return _testCommand; }
+            get { return _searchCommand; }
         }
         public ICommand CloseCommand
         {
@@ -30,10 +31,9 @@ namespace DaaSWpf
         }
         private void InitializeCommands()
         {
-            _testCommand = new CommandClass(c => true, c => DoTest(c)); //!  temporary for dev testing during development
+            _searchCommand = new CommandClass(c => true, c => DoSearch(c)); //!  temporary for dev testing during development
             _closeCommand = new CommandClass(c => true, c => App.Current.MainWindow.Close());
         }
-
 
         #endregion // commanding
 
@@ -43,31 +43,29 @@ namespace DaaSWpf
         {
             _model = new DaaSModel();
             InitializeCommands();
+            InitializeTimer();
         }
 
         #endregion // constructor
 
-        private void DoSearch(object o)
-        {
-            _model.Push<List<Joke>>(new DaaSModel.RequestFind(SearchTerm, c => Jokes = c, e => Error = e));
-        }
-        
+
         #region properties & Fields
 
         private DaaSModel _model;
+        private DispatcherTimer _timer;
 
-        private List<Joke>  _jokes; 
+        private List<Joke> _jokes;
         /// <summary>
         /// A list of jokes to display
         /// </summary>
-        public List<Joke>  Jokes
+        public List<Joke> Jokes
         {
             get => _jokes;
             set
             {
                 if (value == _jokes) return;
                 _jokes = value;
-                RaisePropertyChanged("Jokes");
+                RaisePropertyChanged("Jokes", "ResultStatus");
             }
         }
 
@@ -89,8 +87,6 @@ namespace DaaSWpf
         {
             get { return _error != null; }
         }
-
-
         private string _searchTerm;
         public string SearchTerm
         {
@@ -102,9 +98,113 @@ namespace DaaSWpf
                 RaisePropertyChanged("SearchTerm");
             }
         }
+
+        private bool _isAutoRun = true; // default to autorun true
+        public bool IsAutoRun
+        {
+            get { return _isAutoRun; }
+            set
+            {
+                if (value == _isAutoRun) return;
+                _isAutoRun = value;
+                if (_isAutoRun)
+                    DoRandom();
+                else
+                {
+                    StopCycle();
+                    DoSearch(null);
+                }
+                RaisePropertyChanged("IsAutoRun", "IsSearch", "ResultStatus");
+            }
+        }
+
+        public bool IsSearch
+        {
+            get { return !IsAutoRun; }
+            set
+            {
+                if (value != _isAutoRun)
+                    return;
+                _isAutoRun = !value;
+                if (_isAutoRun)
+                    DoRandom();
+                else
+                {
+                    StopCycle();
+                    DoSearch(null);
+                }
+                RaisePropertyChanged("IsAutoRun", "IsSearch", "ResultStatus");
+            }
+        }
+
+        public string ResultStatus
+        {
+            get
+            {
+                if (IsAutoRun || Jokes == null)
+                    return string.Empty;
+                switch (Jokes.Count)
+                {
+                    case 0: return "Sorry, no matching jokes found.";
+                    case 1: return "1 Joke found.";
+                    default: return $"{Jokes.Count} jokes found.";
+                }
+            }
+        }
+        private string _bigJoke;
+        public string BigJoke
+        {
+            get { return _bigJoke; }
+            set
+            {
+                if (value == _bigJoke) return;
+                _bigJoke = value;
+                MainWindow.FadeIn();
+                RaisePropertyChanged("BigJoke", "ResultStatus");
+            }
+        }
+
         #endregion // properties & fields
 
         #region Methods
+
+        private void DoSearch(object o)
+        {
+            IsAutoRun = false; // for those who are too lazy to click the radio button.
+            _model.Push<List<Joke>>(new DaaSModel.RequestFind(SearchTerm, j => ProcessJokes(j), e => Error = e));
+        }
+
+        private void DoRandom()
+        {
+            _model.Push<Joke>(new DaaSModel.RequestRandom(j => StartCycle(j), e => Error = e));
+        }
+
+        private void ProcessJokes(List<Joke> jokes)
+        {
+            foreach (var joke in jokes)
+                joke.Update(_searchTerm);
+            Jokes = jokes.OrderBy(j => j.wordcount).ToList();
+        }
+
+        private void InitializeTimer()
+        {
+            _timer = new DispatcherTimer();
+            _timer.Interval = TimeSpan.FromSeconds(3); // initial delay shorter... after load
+            _timer.Tick += (s, e) => DoRandom();
+            _timer.Start();
+        }
+        private void StartCycle(Joke joke)
+        {
+            _timer.Interval = TimeSpan.FromSeconds(10);
+            BigJoke = joke.joke;
+            _timer.Start();
+        }
+
+        private void StopCycle()
+        {
+            _timer.Stop();
+        }
+
 
 
 

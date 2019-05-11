@@ -5,34 +5,89 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:DaaSWpf"
         mc:Ignorable="d"
-        Title="Dad as a Service" 
+        Title="" 
         Height="600" Width="800"
-        WindowStyle="None"
+        WindowStartupLocation="CenterScreen"
         ResizeMode="CanResize"
-        Background="#ff111111"
-        >
+        Background="#ff222222">
     <Window.Resources>
         <local:FalseToCollapsedConverter x:Key="FalseToCollapsedConverter" />
+        <local:TrueToCollapsedConverter x:Key="TrueToCollapsedConverter" />
+        <local:SizeToBrushConverter x:Key="SizeToBrushConverter" />
+        <Storyboard x:Name="FadeIn" x:Key="FadeIn">
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="BigTextBlock">
+                <EasingDoubleKeyFrame KeyTime="0" Value="0"/>
+                <EasingDoubleKeyFrame KeyTime="0:0:0.7" Value="1"/>
+            </DoubleAnimationUsingKeyFrames>
+        </Storyboard>
     </Window.Resources>
-
     <DockPanel LastChildFill="true" Margin="2">
-
-            <DockPanel DockPanel.Dock="Top" Margin="4">
-            <Button DockPanel.Dock="Right" Width="23" Height="23" Command="{Binding CloseCommand}">X</Button>
-            <TextBlock Foreground="DarkSlateGray"  DockPanel.Dock="Left" FontSize="20" FontFamily="Arial">Daas</TextBlock>
-            <TextBlock  Foreground="DarkSlateGray" DockPanel.Dock="Left" FontSize="12" FontStyle="Italic"  FontFamily="Arial">Dad as a Service</TextBlock>
-            </DockPanel>
+        <TextBlock DockPanel.Dock="bottom" 
+                   TextAlignment="Center"
+                   Foreground="#FF0066aa"
+                   Background="#aaaaaa"
+                   Padding="6"
+                   FontStyle="Italic"
+                   FontWeight="DemiBold"
+                   Text="Jokes are provided courtesy of I can haz dad joke api, (https://icanhazdadjoke.com/api) "
+                   MouseDown="Credits_Launch"
+                   ToolTip="Click here to visit their site!"
+                   />
+        <DockPanel DockPanel.Dock="Top" Margin="4">
+            <Button DockPanel.Dock="Right" 
+                    Width="23" Height="23" 
+                    Margin="4"
+                    Foreground="#aaaaaa"
+                    Background="#FF0066aa"
+                    FontWeight="ExtraBold"
+                    ToolTip="Click here to exit"
+                    Command="{Binding CloseCommand}">X</Button>
+            <TextBlock Margin="10" 
+                       Foreground="#FF0066aa"  
+                       DockPanel.Dock="Left" 
+                       FontSize="32" 
+                       FontFamily="Arial">Daas</TextBlock>
+            <TextBlock VerticalAlignment="Bottom" 
+                       Foreground="#FF22aaff" 
+                       DockPanel.Dock="Left" 
+                       FontSize="12" 
+                       FontStyle="Italic"  
+                       FontFamily="Arial"
+                       ToolTip="(what a concept!)">... Dad as a Service</TextBlock>
+        </DockPanel>
 
         <Border DockPanel.Dock="Top" BorderBrush="Maroon" 
                 BorderThickness="1" Margin="2">
-            <WrapPanel Orientation="Horizontal" Margin="2">
-                <RadioButton Padding="4" Margin="7,0"  VerticalContentAlignment="Center" >Auto-update</RadioButton>
-                <RadioButton Padding="4" Margin="7,0" VerticalContentAlignment="Center">Use search term:</RadioButton>
-                <TextBox Padding="4" Margin="2" Width="100" Text="{Binding SearchTerm}"/>
-                <Button Command="{Binding TestCommand}" 
+            <WrapPanel Orientation="Horizontal" Margin="2" Background="Black">
+                <RadioButton Padding="4" 
+                             Margin="7,0"  
+                             VerticalContentAlignment="Center" 
+                             Foreground="#FF22aaff"
+                             IsChecked="{Binding IsAutoRun}"
+                             ToolTip="Select this option to show a random joke every 10 seconds">Auto-update</RadioButton>
+                <RadioButton Padding="4" 
+                             Margin="7,0" 
+                             VerticalContentAlignment="Center"
+                             Foreground="#FF22aaff"
+                             IsChecked="{Binding IsSearch}"
+                             ToolTip="Select this option to enter an (optional) search term">Use search term:</RadioButton>
+                <TextBox Padding="4,2" 
+                         Margin="2" 
+                         Width="100" 
+                         Background="#ff333333"
+                         Foreground="#ffcccccc"
+                         ToolTip="Enter a search term here"
+                         Text="{Binding SearchTerm}"/>
+                <Button Command="{Binding SearchCommand}" 
+                        Foreground="#ffcccccc"
+                        Background="#FF0066aa"
+                        ToolTip="Click here to retrieve up to 30 results"
                         Width="80"
                         Margin="2">Search</Button>
-                <!-- //! Remove after dev -->
+                <TextBlock VerticalAlignment="Center" 
+                           Padding="20,0,0,0" 
+                           Foreground="LightSkyBlue" 
+                           Text="{Binding ResultStatus}"/>
             </WrapPanel>
         </Border>
         <Border DockPanel.Dock="Bottom">
@@ -46,33 +101,75 @@
                            Margin="4" />
             </StackPanel>
         </Border>
-        <Border Margin="2" x:Name="MainField">
-            <!-- LastChildFill applies to this border! -->
-            <ListView ItemsSource ="{Binding Jokes}" 
-                      HorizontalAlignment="Stretch" Background="DarkGray"
-                      ScrollViewer.HorizontalScrollBarVisibility="Disabled">
-                <ListView.ItemContainerStyle>
-                <Style TargetType="ListViewItem">
-                    <Setter Property="HorizontalContentAlignment" Value="Stretch"></Setter>
+        <Border Margin="2" x:Name="MainField" Background="#ff333333" >
+            <!-- LastChildFill applies to the border! -->
+            <Grid >
 
-                </Style>
-                </ListView.ItemContainerStyle>
-
-
-<ListView.ItemTemplate>
-                    <DataTemplate>
-                        <Border BorderBrush="Navy" 
+                <!-- The listview shows in search mode -->
+                <ListView 
+                      Visibility="{Binding IsAutoRun, Converter={StaticResource TrueToCollapsedConverter}}"
+                      ItemsSource ="{Binding Jokes}" 
+                      HorizontalAlignment="Stretch" 
+                      ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                      Background="Transparent"
+                      >
+                    <ListView.ItemContainerStyle>
+                        <Style TargetType="ListViewItem">
+                            <Setter Property="HorizontalContentAlignment" Value="Stretch"></Setter>
+                        </Style>
+                    </ListView.ItemContainerStyle>
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <Border BorderBrush="Navy" 
                                 HorizontalAlignment="Stretch"
                                 BorderThickness="1" 
                                 Padding="4" 
                                 Margin="2" 
                                 CornerRadius="5"
                                 Background="Lavender">
-                          <TextBlock TextWrapping="Wrap" HorizontalAlignment="Stretch" Text="{Binding joke}" Padding="4"/>
-                        </Border>
-                    </DataTemplate>
-                </ListView.ItemTemplate>
-            </ListView>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Grid.Column="0"
+                                    VerticalAlignment="Top" 
+                                           Width="23" 
+                                           Height="23" 
+                                           Padding="3" 
+                                           Margin="2"
+                                           TextAlignment="Center" 
+                                           Foreground="White" 
+                                           Text="{Binding size}" 
+                                           Background="{Binding size, Converter={StaticResource SizeToBrushConverter}}"
+                                           ToolTip="{Binding sizeTip}"/>
+                                    <TextBlock 
+                                    Grid.Column="1" TextWrapping="Wrap" 
+                                     HorizontalAlignment="Stretch" 
+                                     Text="{Binding joke}" 
+                                     FontSize="13"
+                                     Padding="7,4"
+                                           ToolTip="{Binding wordCountText}"/>
+                                </Grid>
+                            </Border>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+                <!-- The big textblock shows when in Random mode -->
+                <TextBlock x:Name="BigTextBlock"
+                       Visibility ="{Binding IsAutoRun, Converter={StaticResource FalseToCollapsedConverter}}"
+                       HorizontalAlignment="Center"
+                       VerticalAlignment="Center"
+                       TextAlignment="Center"
+                       Margin="50"
+                       FontSize="32"
+                       TextWrapping="Wrap"
+                       Foreground="LightSkyBlue"
+                       Background="Transparent"
+                       Text="{Binding BigJoke}"
+                       />
+            </Grid>
         </Border>
     </DockPanel>
 </Window>
+
