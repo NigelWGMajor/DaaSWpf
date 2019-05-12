@@ -48,7 +48,6 @@ namespace DaaSWpf
 
         #endregion // constructor
 
-
         #region properties & Fields
 
         private DaaSModel _model;
@@ -209,8 +208,7 @@ namespace DaaSWpf
 
 
         #endregion // methods
-
-
+        
         #region INotifyPropertyChanged Members
         /* using System.ComponentModel; : INotifyPropertyChanged */
         public event PropertyChangedEventHandler PropertyChanged;

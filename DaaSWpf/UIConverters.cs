@@ -38,7 +38,7 @@ namespace DaaSWpf
             throw new NotImplementedException("Not intended for two-way conversion");
         }
     }
-
+    // used by the size indicators:
     public class SizeToBrushConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)

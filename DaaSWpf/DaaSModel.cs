@@ -16,7 +16,7 @@ namespace DaaSWpf
 {
 
     /// <summary>
-    ///
+    /// Connects with the 
     /// </summary>
     public class DaaSModel : IDisposable
     {
@@ -24,6 +24,7 @@ namespace DaaSWpf
 
         private const string _getRandomUrl_ = @"https://icanhazdadjoke.com/";
         private const string _getSearchUrl_ = @"https://icanhazdadjoke.com/search?term={0}&limit={1}&page={2}";
+        // could use this to get favorites:
         private const string _getByIdUrl_ = @"https://icanhazdadjoke.com/j/{0}";
         private const string _userAgent = @"DadAsAService C# (https://github.com/nigelwgmajor/repo/daas)";
         private const string _accept = @"application/json";
@@ -48,8 +49,9 @@ namespace DaaSWpf
         #endregion // constructor
 
         #region Methods
+
         /// <summary>
-        /// This is waht we normally call.
+        /// This performs the web api fetch and deserializes the json result to an object of type T.
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="url"></param>
@@ -61,7 +63,11 @@ namespace DaaSWpf
             T result = Newtonsoft.Json.JsonConvert.DeserializeObject<T>(json);
             return result;
         }
-
+        /// <summary>
+        /// Used by the fetch method above.
+        /// </summary>
+        /// <param name="url"></param>
+        /// <returns></returns>
         private async Task<string> FetchUrl(string url) //! will return a joke ultimately
         {
             try
@@ -81,6 +87,7 @@ namespace DaaSWpf
                 ;
             }
         }
+
         private void InitializeClient(HttpClient client)
         {
             client.DefaultRequestHeaders.UserAgent.ParseAdd(_userAgent);

@@ -11,9 +11,11 @@
         ResizeMode="CanResize"
         Background="#ff222222">
     <Window.Resources>
+        <!-- converters -->
         <local:FalseToCollapsedConverter x:Key="FalseToCollapsedConverter" />
         <local:TrueToCollapsedConverter x:Key="TrueToCollapsedConverter" />
         <local:SizeToBrushConverter x:Key="SizeToBrushConverter" />
+        <!-- animation -->
         <Storyboard x:Name="FadeIn" x:Key="FadeIn">
             <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="BigTextBlock">
                 <EasingDoubleKeyFrame KeyTime="0" Value="0"/>
@@ -21,7 +23,9 @@
             </DoubleAnimationUsingKeyFrames>
         </Storyboard>
     </Window.Resources>
+    <!-- wraps the entire screen -->
     <DockPanel LastChildFill="true" Margin="2">
+        <!-- the credit line at the bottom of the screen -->
         <TextBlock DockPanel.Dock="bottom" 
                    TextAlignment="Center"
                    Foreground="#FF0066aa"
@@ -33,6 +37,7 @@
                    MouseDown="Credits_Launch"
                    ToolTip="Click here to visit their site!"
                    />
+        <!-- the top panel with head/title and exit -->
         <DockPanel DockPanel.Dock="Top" Margin="4">
             <Button DockPanel.Dock="Right" 
                     Width="23" Height="23" 
@@ -55,7 +60,7 @@
                        FontFamily="Arial"
                        ToolTip="(what a concept!)">... Dad as a Service</TextBlock>
         </DockPanel>
-
+        <!-- the control bar -->
         <Border DockPanel.Dock="Top" BorderBrush="Maroon" 
                 BorderThickness="1" Margin="2">
             <WrapPanel Orientation="Horizontal" Margin="2" Background="Black">
@@ -90,6 +95,7 @@
                            Text="{Binding ResultStatus}"/>
             </WrapPanel>
         </Border>
+        <!-- a pop-up bar at the bottom of the screen that launches if an exception is returned -->
         <Border DockPanel.Dock="Bottom">
             <StackPanel Orientation="Horizontal" 
                         Margin="4"
@@ -101,18 +107,17 @@
                            Margin="4" />
             </StackPanel>
         </Border>
+        <!-- the main screen area: LastChildFill applies to this area -->
         <Border Margin="2" x:Name="MainField" Background="#ff333333" >
-            <!-- LastChildFill applies to the border! -->
+            <!-- a grid to hold both modes' screens, one of which is visible at a time -->
             <Grid >
-
                 <!-- The listview shows in search mode -->
                 <ListView 
                       Visibility="{Binding IsAutoRun, Converter={StaticResource TrueToCollapsedConverter}}"
                       ItemsSource ="{Binding Jokes}" 
                       HorizontalAlignment="Stretch" 
                       ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-                      Background="Transparent"
-                      >
+                      Background="Transparent">
                     <ListView.ItemContainerStyle>
                         <Style TargetType="ListViewItem">
                             <Setter Property="HorizontalContentAlignment" Value="Stretch"></Setter>
@@ -155,7 +160,7 @@
                         </DataTemplate>
                     </ListView.ItemTemplate>
                 </ListView>
-                <!-- The big textblock shows when in Random mode -->
+                <!-- The big textblock shows when in Random (aka auto) mode -->
                 <TextBlock x:Name="BigTextBlock"
                        Visibility ="{Binding IsAutoRun, Converter={StaticResource FalseToCollapsedConverter}}"
                        HorizontalAlignment="Center"
@@ -172,4 +177,3 @@
         </Border>
     </DockPanel>
 </Window>
-
