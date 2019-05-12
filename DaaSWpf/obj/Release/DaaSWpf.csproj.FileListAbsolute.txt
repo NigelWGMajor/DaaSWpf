@@ -1,0 +1,17 @@
+N:\_g\DaaS\DaasWpf\DaaSWpf\bin\Release\DaaSWpf.exe.config
+N:\_g\DaaS\DaasWpf\DaaSWpf\bin\Release\DaaSWpf.exe
+N:\_g\DaaS\DaasWpf\DaaSWpf\bin\Release\DaaSWpf.pdb
+N:\_g\DaaS\DaasWpf\DaaSWpf\bin\Release\Newtonsoft.Json.dll
+N:\_g\DaaS\DaasWpf\DaaSWpf\obj\Release\MainWindow.g.cs
+N:\_g\DaaS\DaasWpf\DaaSWpf\obj\Release\App.g.cs
+N:\_g\DaaS\DaasWpf\DaaSWpf\obj\Release\GeneratedInternalTypeHelper.g.cs
+N:\_g\DaaS\DaasWpf\DaaSWpf\obj\Release\DaaSWpf_MarkupCompile.cache
+N:\_g\DaaS\DaasWpf\DaaSWpf\obj\Release\DaaSWpf_MarkupCompile.lref
+N:\_g\DaaS\DaasWpf\DaaSWpf\obj\Release\MainWindow.baml
+N:\_g\DaaS\DaasWpf\DaaSWpf\obj\Release\DaaSWpf.g.resources
+N:\_g\DaaS\DaasWpf\DaaSWpf\obj\Release\DaaSWpf.Properties.Resources.resources
+N:\_g\DaaS\DaasWpf\DaaSWpf\obj\Release\DaaSWpf.csproj.GenerateResource.cache
+N:\_g\DaaS\DaasWpf\DaaSWpf\obj\Release\DaaSWpf.csproj.CoreCompileInputs.cache
+N:\_g\DaaS\DaasWpf\DaaSWpf\obj\Release\DaaSWpf.csproj.CopyComplete
+N:\_g\DaaS\DaasWpf\DaaSWpf\obj\Release\DaaSWpf.exe
+N:\_g\DaaS\DaasWpf\DaaSWpf\obj\Release\DaaSWpf.pdb

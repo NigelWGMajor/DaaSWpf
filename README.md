@@ -3,6 +3,10 @@
 ## Dad as a Service
 ### (Windows Presentation Foundation MVVM version)
 
+|IDE|DotNet|Version
+|-|-|-|
+|VS 2017|4.5|0.1.x.x
+
 This is based on the following code challenge:
 
 > Create an application using C#, .NET, and optionally ASP.NET that uses the
@@ -10,14 +14,13 @@ This is based on the following code challenge:
 > to display jokes.
 >
 > You are welcome to use more technologies like Angular if you wish but it's not required.
-> 
+>
 > There should be two modes the user can choose between:
 > 
 > 1. Display a random joke every 10 seconds.
 > 2. Accept a search term and display the first 30 jokes containing that term, 
 >   with the matching term emphasized in some way (upper, bold, color, etc.) 
 >   and the matching jokes grouped by length: short (<10 words), medium (<20 words), long (>= 20 words).
-
 
 I used this as an opportunity to integrate some of what I have learned recently in the Angular/Node environment using NgRx for the Redux pattern: the concepts of Store and Reducers already parallel the WPF MVVM pattern, and WPF's ICommand interface can behave much like the Actions in the angular environment.  What I was missing was the clear definition of the boundary between synchronous and asynchronous realms that Reducers and Effects offer: I was very much wanting to try something similar in an MVVM setting.
 

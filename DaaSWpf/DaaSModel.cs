@@ -1,22 +1,18 @@
 ﻿using System;
-using System.CodeDom;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
-using System.Text;
 using System.Net.Http;
-using System.IO;
-using System.Runtime.InteropServices.WindowsRuntime;
-using System.Threading;
-using Newtonsoft.Json;
 using System.Threading.Tasks;
-using System.Windows.Navigation;
+using Newtonsoft.Json;
+using System.Data; // used by Newtonsoft
+using System.Xml;  // used by Newtonsoft
 
 namespace DaaSWpf
 {
 
     /// <summary>
-    /// Connects with the 
+    /// Connects with the data source asynchronously.
     /// </summary>
     public class DaaSModel : IDisposable
     {
@@ -24,7 +20,7 @@ namespace DaaSWpf
 
         private const string _getRandomUrl_ = @"https://icanhazdadjoke.com/";
         private const string _getSearchUrl_ = @"https://icanhazdadjoke.com/search?term={0}&limit={1}&page={2}";
-        // could use this to get favorites:
+        // could easily use this to get favorites:
         private const string _getByIdUrl_ = @"https://icanhazdadjoke.com/j/{0}";
         private const string _userAgent = @"DadAsAService C# (https://github.com/nigelwgmajor/repo/daas)";
         private const string _accept = @"application/json";
@@ -60,7 +56,7 @@ namespace DaaSWpf
         {
             string json = FetchUrl(url).Result;
             // we now have the raw JSON string.
-            T result = Newtonsoft.Json.JsonConvert.DeserializeObject<T>(json);
+            T result = JsonConvert.DeserializeObject<T>(json);
             return result;
         }
         /// <summary>

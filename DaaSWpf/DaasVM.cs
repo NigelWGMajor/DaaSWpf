@@ -1,14 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Dynamic;
 using System.Linq;
-using System.Runtime.Serialization;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Threading; // for the dispatch timer
 using System.Windows.Input;
-using System.Windows.Media.Animation;
+using System.Windows.Threading;
 
 namespace DaaSWpf
 {
@@ -37,7 +32,7 @@ namespace DaaSWpf
 
         #endregion // commanding
 
-        #region constructor
+        #region constructor / closer
 
         public DaasVM()
         {
@@ -45,8 +40,14 @@ namespace DaaSWpf
             InitializeCommands();
             InitializeTimer();
         }
+        public void Close()
+        {
+            _timer.Stop();
+            _timer = null;
+            _model.Dispose();
+        }
 
-        #endregion // constructor
+        #endregion // constructor /  closer
 
         #region properties & Fields
 
@@ -188,7 +189,7 @@ namespace DaaSWpf
         private void InitializeTimer()
         {
             _timer = new DispatcherTimer();
-            _timer.Interval = TimeSpan.FromSeconds(3); // initial delay shorter... after load
+            _timer.Interval = TimeSpan.FromSeconds(1.5); // initial delay shorter... after load
             _timer.Tick += (s, e) => DoRandom();
             _timer.Start();
         }
@@ -227,5 +228,6 @@ namespace DaaSWpf
                         new PropertyChangedEventArgs(propertyName));
         }
         #endregion // iNotifyPropertyChanged
+
     }
 }

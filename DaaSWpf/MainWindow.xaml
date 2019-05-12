@@ -9,7 +9,9 @@
         Height="600" Width="800"
         WindowStartupLocation="CenterScreen"
         ResizeMode="CanResize"
-        Background="#ff222222">
+        Background="#ff222222"
+        Closing="MainWindow_OnClosing">
+
     <Window.Resources>
         <!-- converters -->
         <local:FalseToCollapsedConverter x:Key="FalseToCollapsedConverter" />
@@ -23,6 +25,7 @@
             </DoubleAnimationUsingKeyFrames>
         </Storyboard>
     </Window.Resources>
+
     <!-- wraps the entire screen -->
     <DockPanel LastChildFill="true" Margin="2">
         <!-- the credit line at the bottom of the screen -->
